@@ -1,15 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::withCount('items')->get();
         return view('adm.categories.index', compact('categories'));
     }
 
@@ -21,13 +20,13 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'division' => 'required'
+            'name'     => 'required',
+            'division' => 'required',
         ]);
 
         Category::create([
-            'name' => $request->name,
-            'division' => $request->division
+            'name'     => $request->name,
+            'division' => $request->division,
         ]);
 
         return redirect()->route('categories.index')->with('success', 'Data berhasil ditambah');
@@ -42,8 +41,8 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required',
-            'division' => 'required'
+            'name'     => 'required',
+            'division' => 'required',
         ]);
 
         $category = Category::findOrFail($id);
@@ -54,7 +53,19 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
-        Category::findOrFail($id)->delete();
+        $category = Category::with('items.lendings')->findOrFail($id);
+
+        // cek apakah ada item yang masih dipinjam
+        foreach ($category->items as $item) {
+            $isLending = $item->lendings()->whereNull('return_date')->exists();
+
+            if ($isLending) {
+                return back()->with('error', 'Category tidak bisa dihapus karena masih ada item yang dipinjam!');
+            }
+        }
+
+        $category->delete();
+
         return back()->with('success', 'Data berhasil dihapus');
     }
 }

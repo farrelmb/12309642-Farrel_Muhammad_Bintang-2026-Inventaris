@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +10,9 @@ class Lending extends Model
         'name',
         'total',
         'ket',
-        'return_date'
+        'return_date',
+        'returned_total',
+        'repair_total',
     ];
 
     public function item()

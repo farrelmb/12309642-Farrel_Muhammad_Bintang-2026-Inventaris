@@ -5,6 +5,11 @@
     <h4>Edit Item</h4>
     <p>Update item data</p>
 
+    {{-- ALERT --}}
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
     <form action="{{ route('items.update', $item->id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -42,19 +47,31 @@
                 value="{{ old('total', $item->total) }}">
         </div>
 
-        {{-- NEW BROKE ITEM --}}
+        {{-- TAMBAH BARANG RUSAK --}}
         <div class="mb-3">
             <label class="form-label">
-                New Broke Item (currently: {{ $item->repair }})
+                New Broke Item (current: {{ $item->repair }})
             </label>
             <input 
                 type="number" 
                 name="new_broke" 
                 class="form-control"
                 value="0">
-            <small class="text-muted">
-                Tambahan jumlah barang rusak
-            </small>
+            <small class="text-muted">Tambah jumlah barang rusak</small>
+        </div>
+
+        {{-- PERBAIKI BARANG --}}
+        <div class="mb-3">
+            <label class="form-label">
+                Fixed Item (repair available: {{ $item->repair }})
+            </label>
+            <input 
+                type="number" 
+                name="fixed_item" 
+                id="fixedItem"
+                class="form-control"
+                value="0">
+            <small class="text-muted">Jumlah barang yang sudah diperbaiki</small>
         </div>
 
         {{-- BUTTON --}}
@@ -70,10 +87,19 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        $('.select2').select2({
-            width: '100%'
-        });
+$(document).ready(function() {
+    $('.select2').select2({
+        width: '100%'
     });
+});
+
+// VALIDASI FIXED ITEM
+document.getElementById('fixedItem').addEventListener('input', function() {
+    let max = {{ $item->repair }};
+    if (this.value > max) {
+        alert("Tidak boleh melebihi jumlah repair!");
+        this.value = 0;
+    }
+});
 </script>
 @endsection

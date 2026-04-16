@@ -2,11 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemStaffController;
+use App\Http\Controllers\LendingStaffController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LendingStaffController;
-use App\Http\Controllers\ItemStaffController;
 
 // ======================
 // LANDING
@@ -26,15 +27,12 @@ Route::post('/login', [AuthController::class, 'login']);
 // ======================
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-
 // ======================
 // ADMIN
 // ======================
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
-    Route::get('/admin', function () {
-        return view('adm.dashboardadm');
-    });
+    Route::get('/admin', [DashboardController::class, 'admin']);
 
     // USERS
     Route::get('/users/admin', [UserController::class, 'index']);
@@ -49,7 +47,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('items', ItemController::class);
 });
-
 
 // ======================
 // STAFF
@@ -74,3 +71,10 @@ Route::prefix('staff')->group(function () {
 
     Route::get('/itemstff', [ItemStaffController::class, 'index'])->name('itemstff.index');
 });
+
+Route::get('/items-export', [ItemController::class, 'export'])->name('items.export');
+Route::get('/users/export', [UserController::class, 'export'])->name('users.export');
+Route::get('/lending/export', [LendingStaffController::class, 'export'])->name('lending.export');
+
+Route::get('/items/{id}/lendings', [ItemController::class, 'lendings'])
+    ->name('items.lendings');

@@ -1,75 +1,41 @@
 @extends('layouts.templateadm')
 
 @section('content')
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard Admin</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            background: #f4f6f9;
-        }
+<div class="container">
+    <h3 class="mb-4">Dashboard Admin</h3>
 
-        .navbar {
-            background: #007bff;
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-        }
+    <div class="row">
 
-        .container {
-            padding: 20px;
-        }
+        {{-- CATEGORY --}}
+        <div class="col-md-4 mb-3">
+            <div class="card shadow border-0 rounded">
+                <div class="card-body text-center">
+                    <h5 class="text-muted">Total Category</h5>
+                    <h2 class="fw-bold">{{ $totalCategory }}</h2>
+                </div>
+            </div>
+        </div>
 
-        .cards {
-            display: flex;
-            gap: 20px;
-        }
+        {{-- REPAIR --}}
+        <div class="col-md-4 mb-3">
+            <div class="card shadow border-0 rounded">
+                <div class="card-body text-center">
+                    <h5 class="text-muted">Item in Repair</h5>
+                    <h2 class="fw-bold text-warning">{{ $totalRepair }}</h2>
+                </div>
+            </div>
+        </div>
 
-        .card {
-            flex: 1;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-        }
+        {{-- LENDING --}}
+        <div class="col-md-4 mb-3">
+            <div class="card shadow border-0 rounded">
+                <div class="card-body text-center">
+                    <h5 class="text-muted">Item Lending</h5>
+                    <h2 class="fw-bold text-danger">{{ $totalLending }}</h2>
+                </div>
+            </div>
+        </div>
 
-        .card h3 {
-            margin: 0;
-            font-size: 18px;
-            color: #555;
-        }
-
-        .card p {
-            font-size: 24px;
-            margin-top: 10px;
-        }
-
-        .logout {
-            background: red;
-            border: none;
-            padding: 8px 15px;
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Navbar -->
-    <div class="navbar">
-        <div>Dashboard Admin</div>
     </div>
-
-    <!-- Content -->
-    <div class="container">
-        <h3>Selamat Datang</h3>
-    </div>
-
-</body>
-</html>
+</div>
 @endsection

@@ -33,4 +33,5 @@ class Item extends Model
             ->whereNull('return_date')
             ->sum('total');
     }
+    
 }
