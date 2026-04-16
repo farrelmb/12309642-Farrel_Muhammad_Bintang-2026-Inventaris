@@ -92,7 +92,7 @@
             </li>
             <hr>
 
-            <div class="section-title">Accounts</div>
+            <div class="section-title">Items Data</div>
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('categories*') ? 'active' : '' }}"
                     href="{{ route('categories.index') }}">
